@@ -9,6 +9,7 @@ all_cases = [
         "ods-ai-competitions-dl-fintech-bki.html",
     ),
     ("https://www.kinopoisk.ru/lists", "www-kinopoisk-ru-lists.html"),
+    ("https://yandex.ru/", "yandex-ru.html"),
 ]
 
 
