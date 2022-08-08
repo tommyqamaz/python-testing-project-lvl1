@@ -17,7 +17,8 @@ class FakeLogger:
         self.mock(value)
 
     def save(self, value, path):
-        pass
+        with open(path) as f:
+            f.write(value)
 
 
 def test_logger():

@@ -11,6 +11,6 @@ def download(url_path: str, dir: str = os.getcwd(), logger=Logger):
     downloaded_file = "file :)"  # requests.get(full_path).text
 
     logger.log(full_path)
-    logger.save(downloaded_file, full_path)
+    logger.save(downloaded_file, full_path)  # creating file full_path
 
     return full_path
