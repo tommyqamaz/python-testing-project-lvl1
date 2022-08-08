@@ -3,15 +3,13 @@ import argparse
 
 def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Compares two configuration files and shows a difference."
+        description="Downloades given page and saves it in html format."
     )
     parser.add_argument(
-        "-f",
-        "--format",
-        help="set format of output",
-        choices=["nested", "plain", "json"],
-        default="nested",
+        "-o",
+        "--output",
+        help="set directory to save",
+        default="cwd",
     )
-    parser.add_argument("first_file")
-    parser.add_argument("second_file")
+    parser.add_argument("path")
     return parser

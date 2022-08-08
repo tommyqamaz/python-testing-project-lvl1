@@ -1,4 +1,3 @@
-from unicodedata import name
 import pytest
 from page_loader.utils import filter_name
 
