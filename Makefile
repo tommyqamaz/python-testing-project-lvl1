@@ -21,4 +21,4 @@ test:
 	poetry run pytest
 
 test-coverage:
-	poetry run pytest --cov-report xml --cov-report term-missing --cov=gendiff tests/
+	poetry run pytest --cov-report xml --cov-report term-missing --cov=page_loader tests/
