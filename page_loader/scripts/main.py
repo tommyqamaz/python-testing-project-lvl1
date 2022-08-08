@@ -3,8 +3,9 @@ from page_loader import get_parser
 
 
 def main():
-    get_parser()
-    download()
+    parser = get_parser()
+    args = parser.parse_args()
+    download(url_path=args.path, dir=args.output)
 
 
 if __name__ == "__main__":

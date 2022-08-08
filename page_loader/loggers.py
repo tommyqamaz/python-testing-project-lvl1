@@ -5,6 +5,6 @@ class Logger:
     def log(self, value):
         print(value)
 
-    def save(file, path):
+    def save(self, content, path):
         with open(path, "w") as f:
-            f.write(file)
+            f.write(content)
