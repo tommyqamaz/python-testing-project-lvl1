@@ -3,13 +3,13 @@ from page_loader.utils import filter_name
 
 
 all_cases = [
-    ("https://ru.hexlet.io/courses", "ru-hexlet-io-courses.html"),
+    ("https://ru.hexlet.io/courses", "ru-hexlet-io-courses"),
     (
         "https://ods.ai/competitions/dl-fintech-bki",
-        "ods-ai-competitions-dl-fintech-bki.html",
+        "ods-ai-competitions-dl-fintech-bki",
     ),
-    ("https://www.kinopoisk.ru/lists", "www-kinopoisk-ru-lists.html"),
-    ("https://yandex.ru/", "yandex-ru.html"),
+    ("https://www.kinopoisk.ru/lists", "www-kinopoisk-ru-lists"),
+    ("https://yandex.ru/", "yandex-ru"),
 ]
 
 
