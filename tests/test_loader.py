@@ -1,8 +1,7 @@
 from unittest.mock import Mock
 import requests_mock
 import os
-from bs4 import BeautifulSoup
-
+import tempfile
 from page_loader import __version__
 from page_loader import download
 
@@ -27,28 +26,32 @@ class FakeLogger:
 
     def save(self, value, path):
         with open(path, "w") as f:
-            # add tempfile
             f.write(value)
 
 
 def test_loader():
     url = "https://ru.hexlet.io/courses"
+    image_url = "https://ru.hexlet.io/courses/assets/professions/python.png"
     logger = FakeLogger()
 
     with open("tests/fixtures/before.html", "r") as f:
-        before = str(BeautifulSoup(f.read(), "html.parser"))
+        before = f.read()
 
     with open("tests/fixtures/after.html", "r") as f:
-        after = str(BeautifulSoup(f.read(), "html.parser"))
+        after = f.read()
+    with open(
+        "tests/fixtures/ru-hexlet-io-courses_files/ru-hexlet-io-assets-professions-python.png",  # noqa E501
+        "rb",
+    ) as f:
+        img = f.read()
 
-    with requests_mock.Mocker() as mock:
-        mock.get(url, text=before)
-        result, dir_path = download(url, logger=logger)
-        with open(result, "r") as f:
-            res = f.read()
+    with tempfile.TemporaryDirectory() as temp_dir:
+        with requests_mock.Mocker() as mock:
+            mock.register_uri("GET", url, text=str(before))
+            mock.register_uri("GET", image_url, content=img)
+            result = download(url, dir=temp_dir, logger=logger)
+            with open(result, "r") as f:
+                res = f.read()
     assert res == after
     assert logger.mock.call_count == 1
     assert result == logger.mock.call_args.args[0]
-
-    delete_file(result)
-    delete_file(dir_path)
