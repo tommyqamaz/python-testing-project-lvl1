@@ -23,6 +23,14 @@ def filter_name(url_path: str) -> str:
     return url_path
 
 
+def get_path_to_save(dir, url_path):
+    dir = os.getcwd() if dir == "cwd" else dir
+    base_name = filter_name(url_path)
+    html_name = base_name + ".html"
+    path_to_save = os.path.join(dir, html_name)
+    return path_to_save
+
+
 def join_urls(url1: str, url2: str) -> str:
     """Joins two urls into one
 
@@ -33,6 +41,7 @@ def join_urls(url1: str, url2: str) -> str:
     Returns:
         str: joined url
     """
+
     if url1.endswith("/"):
         url1 = url1[:-1]
     if url2.startswith("/"):
@@ -50,6 +59,7 @@ def scrap_files(base_url: str, path: str = os.getcwd()) -> BeautifulSoup:
     Returns:
         BeautifulSoup: modified soup
     """
+
     html_page = requests.get(base_url)
     soup = BeautifulSoup(html_page.content, "html.parser")
     # dir_name = filter_name(base_url) + "_files"
@@ -77,6 +87,7 @@ def scrap_images(soup: BeautifulSoup, base_url: str, dir_path: str) -> Beautiful
     Returns:
         BeautifulSoup: modified soup with replaced images src to local copies
     """
+
     dir_name = filter_name(base_url) + "_files"
     for image in soup.find_all("img"):
         image_url = join_urls(base_url, image["src"])
