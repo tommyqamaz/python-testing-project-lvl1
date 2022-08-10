@@ -1,4 +1,6 @@
 class Logger:
+    """log the events"""
+
     def __init__(self):
         pass
 

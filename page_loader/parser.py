@@ -2,6 +2,11 @@ import argparse
 
 
 def get_parser() -> argparse.ArgumentParser:
+    """get parser
+
+    Returns:
+        argparse.ArgumentParser: parser
+    """
     parser = argparse.ArgumentParser(
         description="Downloades given page and saves it in html format."
     )
