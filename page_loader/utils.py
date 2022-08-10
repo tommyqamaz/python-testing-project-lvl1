@@ -2,9 +2,10 @@ import re
 import os
 from bs4 import BeautifulSoup
 import requests
+from urllib.parse import urlparse
 
 
-def filter_name(url_path):
+def filter_name(url_path: str) -> str:
     """
     https://ru.hexlet.io/courses -> ru-hexlet-io-courses
     """
@@ -16,6 +17,14 @@ def filter_name(url_path):
     return url_path
 
 
+def join_urls(url1: str, url2: str) -> str:
+    if url1.endswith("/"):
+        url1 = url1[:-1]
+    if url2.startswith("/"):
+        url2 = url2[1:]
+    return os.path.join(url1, url2)
+
+
 def scrap_images(base_url: str, path: str = os.getcwd()) -> BeautifulSoup:
     """
     Downloades page and returns html page with replaced to local copies images.
@@ -23,20 +32,24 @@ def scrap_images(base_url: str, path: str = os.getcwd()) -> BeautifulSoup:
 
     html_page = requests.get(base_url)
     soup = BeautifulSoup(html_page.content, "html.parser")
-    base_dir = os.path.join(path, filter_name(base_url) + "_files")
+    dir_name = filter_name(base_url) + "_files"
+    dir_path = os.path.join(path, filter_name(base_url) + "_files")
 
-    if not os.path.exists(base_dir):
-        os.makedirs(base_dir)
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
 
     for image in soup.find_all("img"):
-        image_url = os.path.join(base_url, image["src"])
+        image_url = join_urls(base_url, image["src"])
         response = requests.get(image_url)
         if response.status_code == 200:
 
-            path_to_save = os.path.join(base_dir, filter_name(image_url))
-            path_to_save = re.sub(r"-(?=[\w]*$)", ".", path_to_save)
+            image_src = join_urls(
+                urlparse(base_url).netloc.replace(".", "/"), image["src"]
+            ).replace("/", "-")
 
-            image["src"] = path_to_save
+            path_to_save = join_urls(dir_path, image_src)
+
+            image["src"] = join_urls(dir_name, image_src)
 
             file = open(f"{path_to_save}", "wb")
             file.write(response.content)
@@ -44,4 +57,4 @@ def scrap_images(base_url: str, path: str = os.getcwd()) -> BeautifulSoup:
         else:
             raise RuntimeError(response.status_code)
 
-    return soup, base_dir
+    return soup
