@@ -44,4 +44,4 @@ def scrap_images(base_url: str, path: str = os.getcwd()) -> BeautifulSoup:
         else:
             raise RuntimeError(response.status_code)
 
-    return soup
+    return soup, base_dir
