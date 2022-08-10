@@ -9,8 +9,8 @@ def download(url_path: str, dir: str = "cwd", logger=Logger()):
     base_name = filter_name(url_path)
     html_name = base_name + ".html"
     full_path = os.path.join(dir, html_name)
-    soup = scrap_images(url_path, dir)
+    soup, dir_path = scrap_images(url_path, dir)
     logger.save(soup.prettify(), full_path)  # creating file full_path
     logger.log(full_path)
 
-    return full_path
+    return full_path, dir_path

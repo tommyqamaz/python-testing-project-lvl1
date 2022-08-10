@@ -1,6 +1,7 @@
 from unittest.mock import Mock
 import requests_mock
 import os
+from bs4 import BeautifulSoup
 
 from page_loader import __version__
 from page_loader import download
@@ -30,17 +31,24 @@ class FakeLogger:
             f.write(value)
 
 
-def test_logger():
+def test_loader():
     url = "https://ru.hexlet.io/courses"
     logger = FakeLogger()
-    content = "res"
+
+    with open("tests/fixtures/before.html", "r") as f:
+        before = str(BeautifulSoup(f.read(), "html.parser"))
+
+    with open("tests/fixtures/after.html", "r") as f:
+        after = str(BeautifulSoup(f.read(), "html.parser"))
+
     with requests_mock.Mocker() as mock:
-        mock.get(url, text=content)
-        result = download(url, logger=logger)
+        mock.get(url, text=before)
+        result, dir_path = download(url, logger=logger)
         with open(result, "r") as f:
             res = f.read()
-    assert res == content
+    assert res == after
     assert logger.mock.call_count == 1
     assert result == logger.mock.call_args.args[0]
 
     delete_file(result)
+    delete_file(dir_path)
