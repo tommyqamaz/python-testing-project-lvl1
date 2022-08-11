@@ -1,6 +1,6 @@
-import os
 from page_loader.loggers import Logger
-from page_loader.utils import filter_name, scrap_files, get_path_to_save
+from page_loader.utils import get_path_to_save
+from page_loader.scraping import scrap_files
 
 
 def download(url_path: str, dir: str = "cwd", logger=Logger()) -> str:
