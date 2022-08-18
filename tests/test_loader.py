@@ -49,6 +49,12 @@ def test_loader():
         with requests_mock.Mocker() as mock:
             mock.register_uri("GET", url, text=str(before))
             mock.register_uri("GET", image_url, content=img)
+            other_urls = [
+                "https://ru.hexlet.io/courses/courses",
+                "https://ru.hexlet.io/courses/assets/application.css",
+            ]
+            for ou in other_urls:
+                mock.register_uri("GET", ou, text="got it")
             result = download(url, dir=temp_dir, logger=logger)
             with open(result, "r") as f:
                 res = f.read()
