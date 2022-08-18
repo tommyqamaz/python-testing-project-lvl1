@@ -53,17 +53,13 @@ def scrap_images(soup: BeautifulSoup, base_url: str, dir_path: str) -> Beautiful
             response = requests.get(image_url)
             if response.status_code == 200:
 
-                image_src = join_urls(
-                    urlparse(base_url).netloc.replace(".", "/"), image["src"]
-                ).replace("/", "-")
-
+                image_src = get_content_src(base_url, image["src"])
                 path_to_save = join_urls(dir_path, image_src)
 
                 image["src"] = join_urls(dir_name, image_src)
 
-                file = open(f"{path_to_save}", "wb")
-                file.write(response.content)
-                file.close()
+                save_content(path_to_save, response.content)
+
             else:
                 raise RuntimeError(response.status_code)
 
@@ -74,15 +70,12 @@ def scrap_content(soup: BeautifulSoup, base_url: str, dir_path: str) -> Beautifu
     dir_name = filter_name(base_url) + "_files"
     url_netloc = urlparse(base_url).netloc
     for tag in soup.find_all(["link", "script"]):
-        for attr in ["href", "src"]:
-            if attr in tag.attrs:
-                attr_in = attr
-                tag_to_change = tag[attr]
+        tag_to_change, attr_in = get_tag_attrs(tag)
+
         if tag_to_change.startswith("/"):
-            content_src = join_urls(
-                url_netloc.replace(".", "/"), tag_to_change
-            ).replace("/", "-")
+            content_src = get_content_src(base_url, tag_to_change)
             content_url = join_urls(base_url, tag_to_change)
+
         else:
             attr_netloc = urlparse(tag_to_change).netloc
             if url_netloc == attr_netloc:
@@ -91,7 +84,6 @@ def scrap_content(soup: BeautifulSoup, base_url: str, dir_path: str) -> Beautifu
                 continue
 
         response = requests.get(content_url)
-
         if response.status_code == 200:
             content_src = re.sub(r"-(?=[\w]{1,4}$)", ".", content_src)
             if "." not in content_src:
@@ -99,8 +91,25 @@ def scrap_content(soup: BeautifulSoup, base_url: str, dir_path: str) -> Beautifu
             path_to_save = join_urls(dir_path, content_src)
             tag[attr_in] = join_urls(dir_name, content_src)
 
-            file = open(f"{path_to_save}", "wb")
-            file.write(response.content)
-            file.close()
+            save_content(path_to_save, response.content)
 
     return soup
+
+
+def save_content(path_to_save: str, content: bytes) -> None:
+    file = open(f"{path_to_save}", "wb")
+    file.write(content)
+    file.close()
+
+
+def get_tag_attrs(tag):
+    for attr in ["href", "src"]:
+        if attr in tag.attrs:
+            attr_in = attr
+            tag_to_change = tag[attr]
+    return tag_to_change, attr_in
+
+
+def get_content_src(base_url, tag):
+    src = join_urls(urlparse(base_url).netloc.replace(".", "/"), tag).replace("/", "-")
+    return src
