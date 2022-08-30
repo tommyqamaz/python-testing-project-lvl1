@@ -1,0 +1,31 @@
+.my-class {
+    padding-left: 0;
+}
+/*child li*/
+.my-class > li > ul {
+    list-style-type: none;
+    padding: 0;
+    font-size: 80%;
+}
+
+.my-class > li.active > a {
+    border-left-style: solid;
+    border-left-width: thick;
+    border-left-color: #FFC100;
+    text-decoration: underline;
+}
+
+.my-class > li > ul> li.active > a {
+    border-left-style: solid;
+    border-left-width: thick;
+    border-left-color: #FFC100;
+    text-decoration: underline;
+}
+
+/*.my-class > li > ul {*/
+/*    display: none;*/
+/*}*/
+
+.my-class > li > ul.closed {
+    display: none;
+}
