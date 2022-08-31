@@ -17,7 +17,7 @@ def scrap_files(base_url: str, path: str = os.getcwd()) -> BeautifulSoup:
     Returns:
         BeautifulSoup: modified soup
     """
-
+    path = os.getcwd() if path == "cwd" else path
     html_page = requests.get(base_url)
     soup = BeautifulSoup(html_page.content, "html.parser")
     dir_path = os.path.join(path, filter_name(base_url) + "_files")

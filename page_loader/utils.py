@@ -1,5 +1,7 @@
 import re
 import os
+from bs4 import BeautifulSoup
+import requests
 
 
 def filter_name(url_path: str) -> str:
@@ -12,8 +14,8 @@ def filter_name(url_path: str) -> str:
         str: modified url_path
     """
 
-    url_path = re.sub(r"^http[s]?:/+", "", url_path)
-    url_path = re.sub(r"(/+\b)|\.", "-", url_path)
+    url_path = re.sub(r"^http[s]?:/+", "", url_path)  # remove http/https
+    url_path = re.sub(r"\b(/+\b)|\.", "-", url_path)  # replace dots and slashes
     # we add \b because we don't want to replace the last slash
     # avoiding this situation: yandex-ru-.html
     url_path = url_path.replace("/", "")
@@ -33,7 +35,7 @@ def join_urls(url1: str, url2: str) -> str:
 
     Args:
         url1 (str): web adress 1
-        url2 (str): web adress 1
+        url2 (str): web adress 2
 
     Returns:
         str: joined url
@@ -44,3 +46,9 @@ def join_urls(url1: str, url2: str) -> str:
     if url2.startswith("/"):
         url2 = url2[1:]
     return os.path.join(url1, url2)
+
+
+def get_soup(url: str) -> BeautifulSoup:
+    html_page = requests.get(url)
+    soup = BeautifulSoup(html_page.content, "html.parser")
+    return soup
