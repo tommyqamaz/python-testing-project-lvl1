@@ -1,6 +1,5 @@
-import os
-from page_loader.utils import get_path_to_save, get_soup
-from page_loader.scrap import replace_links
+from page_loader.utils import get_soup
+from page_loader.scrap import replace_links, download_links
 
 
 def download(url: str, dir: str = "cwd") -> str:
@@ -15,12 +14,7 @@ def download(url: str, dir: str = "cwd") -> str:
     Returns:
         str: path where content was saved
     """
-    path_to_save = get_path_to_save(dir, url)
+    # path_to_save = get_path_to_save(dir, url)
     soup = get_soup(url)
-    soup = replace_links(soup)
-
-    files_path = donwload_links(soup, dir)
-
-    logger.log(path_to_save)
-
-    return path_to_save
+    soup, pairs = replace_links(soup)
+    download_links(pairs)
