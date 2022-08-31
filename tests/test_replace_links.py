@@ -1,5 +1,4 @@
 import requests_mock
-import tempfile
 from page_loader.scrap import replace_links
 from page_loader.utils import get_soup
 from bs4 import BeautifulSoup
@@ -14,7 +13,6 @@ def test_replace_links():
     with open("tests/fixtures/after.html", "r") as f:
         after = f.read()
         asoup_orig = BeautifulSoup(after, "html.parser")
-    with tempfile.TemporaryDirectory() as temp_dir:
         with requests_mock.Mocker() as mock:
             mock.register_uri("GET", url, text=str(before))
             bsoup = get_soup(url)
