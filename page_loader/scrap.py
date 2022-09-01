@@ -63,6 +63,7 @@ def replace_links(
 
 
 def download_links(pairs: list, base_url: str, path_to_save: str = ""):
+
     save_dir = filter_name(base_url) + "_files"
     os.makedirs(os.path.join(path_to_save, save_dir), exist_ok=True)
     for pair in pairs:
@@ -80,6 +81,7 @@ def get_content(url: str) -> str:
 
 def save_content(content: bytes, path_to_save: str, mode="wb"):
     with open(f"{path_to_save}", mode) as f:
+
         f.write(content)
 
 
