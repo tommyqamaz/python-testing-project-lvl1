@@ -1,4 +1,5 @@
 import argparse
+import os
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -14,7 +15,7 @@ def get_parser() -> argparse.ArgumentParser:
         "-o",
         "--output",
         help="set directory to save",
-        default="cwd",
+        default=os.getcwd(),
     )
     parser.add_argument("path")
     return parser

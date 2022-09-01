@@ -29,5 +29,10 @@ def test_download_files():
             mock.register_uri("GET", matcher, content=b"content")
             download_links(pairs, url, temp_dir)
             dr = os.listdir(temp_dir)
+            # assert os.getcwd() == temp_dir
             assert len(dr) == 1
             assert len(os.listdir(os.path.join(temp_dir, dr[0]))) == 4
+            for file in os.listdir(os.path.join(temp_dir, dr[0])):
+                with open(f"{os.path.join(temp_dir, dr[0], file)}", "rb") as f:
+                    content = f.read()
+                assert content == b"content"
