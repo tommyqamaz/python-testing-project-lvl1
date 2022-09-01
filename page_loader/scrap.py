@@ -54,9 +54,6 @@ def replace_links(
                 link_to_save = join_urls(base_url, link)
                 links.append((link_to_save, new_link))
 
-            # elif url_netloc == urlparse(link).netloc:
-            #     new_link = filter_name(link_netloc) + file_ext
-            #     links.append((link_netloc + file_ext, new_link))
             else:
                 continue  # we dont need to change or save other types of links
             save_dir = filter_name(base_url) + "_files"
@@ -65,7 +62,7 @@ def replace_links(
     return soup, links
 
 
-def download_links(pairs: list, base_url, path_to_save=""):
+def download_links(pairs: list, base_url: str, path_to_save: str = ""):
     save_dir = filter_name(base_url) + "_files"
     os.makedirs(os.path.join(path_to_save, save_dir), exist_ok=True)
     for pair in pairs:
@@ -81,8 +78,8 @@ def get_content(url: str) -> str:
     return res.content
 
 
-def save_content(content: bytes, path_to_save: str):
-    with open(f"{path_to_save}", "wb") as f:
+def save_content(content: bytes, path_to_save: str, mode="wb"):
+    with open(f"{path_to_save}", mode) as f:
         f.write(content)
 
 

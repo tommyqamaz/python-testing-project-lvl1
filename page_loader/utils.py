@@ -22,12 +22,11 @@ def filter_name(url_path: str) -> str:
     return url_path
 
 
-# def get_path_to_save(dir: str, url_path: str) -> str:
-#     dir = os.getcwd() if dir == "cwd" else dir
-#     base_name = filter_name(url_path)
-#     html_name = base_name + ".html"
-#     path_to_save = os.path.join(dir, html_name)
-#     return path_to_save
+def get_path_to_save(dir: str, url_path: str) -> str:
+    base_name = filter_name(url_path)
+    html_name = base_name + ".html"
+    path_to_save = os.path.join(dir, html_name)
+    return path_to_save
 
 
 def join_urls(url1: str, url2: str) -> str:
