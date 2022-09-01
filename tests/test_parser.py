@@ -1,6 +1,7 @@
 import pytest
 from page_loader import get_parser
 from argparse import Namespace
+import os
 
 
 def test_parser():
@@ -10,4 +11,4 @@ def test_parser():
         parser.parse_args(["-h"])
 
     assert se.value.code == 0
-    assert parser.parse_args(["path"]) == Namespace(output="cwd", path="path")
+    assert parser.parse_args(["path"]) == Namespace(output=os.getcwd(), path="path")

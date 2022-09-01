@@ -43,16 +43,20 @@ def replace_links(
             link_netloc = link.replace(file_ext, "")
             url_netloc = urlparse(base_url).netloc
 
-            if link.startswith("/"):
+            if url_netloc == urlparse(link).netloc:
+                new_link = filter_name(link_netloc) + file_ext
+                links.append((link_netloc + file_ext, new_link))
+
+            elif not link.startswith("http"):
 
                 new_link = filter_name(join_urls(url_netloc, link_netloc)) + file_ext
 
                 link_to_save = join_urls(base_url, link)
                 links.append((link_to_save, new_link))
 
-            elif url_netloc == urlparse(link).netloc:
-                new_link = filter_name(link_netloc) + file_ext
-                links.append((link_netloc + file_ext, new_link))
+            # elif url_netloc == urlparse(link).netloc:
+            #     new_link = filter_name(link_netloc) + file_ext
+            #     links.append((link_netloc + file_ext, new_link))
             else:
                 continue  # we dont need to change or save other types of links
             save_dir = filter_name(base_url) + "_files"
@@ -63,7 +67,7 @@ def replace_links(
 
 def download_links(pairs: list, base_url, path_to_save=""):
     save_dir = filter_name(base_url) + "_files"
-    os.mkdir(os.path.join(path_to_save, save_dir))
+    os.makedirs(os.path.join(path_to_save, save_dir), exist_ok=True)
     for pair in pairs:
         url, name = pair
         content = get_content(url)
