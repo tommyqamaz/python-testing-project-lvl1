@@ -2,6 +2,11 @@ import re
 import os
 from bs4 import BeautifulSoup
 import requests
+import logging
+
+
+logger = logging.getLogger(__name__)
+logger.setLevel("INFO")
 
 
 def filter_name(url_path: str) -> str:
@@ -48,6 +53,7 @@ def join_urls(url1: str, url2: str) -> str:
 
 
 def get_soup(url: str) -> BeautifulSoup:
+    logger.info(f"requested page {url}")
     html_page = requests.get(url)
     soup = BeautifulSoup(html_page.content, "html.parser")
     return soup

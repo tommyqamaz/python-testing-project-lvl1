@@ -2,6 +2,10 @@ from page_loader.utils import get_soup, get_path_to_save
 from page_loader.scrap import replace_links, download_links, save_content
 
 import os
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel("INFO")
 
 
 def download(url: str, dir: str = os.getcwd()) -> str:
@@ -18,10 +22,13 @@ def download(url: str, dir: str = os.getcwd()) -> str:
     """
 
     path_to_save = get_path_to_save(dir, url)
+    logger.info(f"requested url: {url}")
     soup = get_soup(url)
     soup, pairs = replace_links(soup, url, dir)
+    logger.info(f"output {dir}")
     os.makedirs(dir, exist_ok=True)
+    logger.info(f"saved to {path_to_save}")
     save_content(soup.prettify(), path_to_save, mode="w")
 
     download_links(pairs, url, dir)
-    print(f"{url} was downloaded")
+    print(f"Page was downloaded as {path_to_save}")
