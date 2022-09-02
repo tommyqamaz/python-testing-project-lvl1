@@ -36,8 +36,9 @@ def test_download_files():
             dr = os.listdir(temp_dir)
             # assert os.getcwd() == temp_dir
             assert len(dr) == 1
-            assert len(os.listdir(os.path.join(temp_dir, dr[0]))) == 4
-            for file in os.listdir(os.path.join(temp_dir, dr[0])):
+            files = os.listdir(os.path.join(temp_dir, dr[0]))
+            assert len(files) == 4
+            for file in files:
                 with open(f"{os.path.join(temp_dir, dr[0], file)}", "rb") as f:
                     content = f.read()
                 assert content == b"content"
@@ -81,3 +82,7 @@ def test_availability(some_url, status_code):
 def test_save_name():
     res = get_path_to_save("temp", url)
     assert res == "temp/ru-hexlet-io-courses.html"
+
+
+def test_file_operations():
+    pass

@@ -21,6 +21,12 @@ def download(url: str, dir: str = os.getcwd()) -> str:
     Returns:
         str: path where content was saved
     """
+    logger.info(f"output path: {os.path.join(os.getcwd(), dir)}")
+    if os.access(dir, os.W_OK):
+        os.makedirs(dir, exist_ok=True)
+    else:
+        logger.error(f"Access {dir} denied")
+        return
 
     path_to_save = get_path_to_save(dir, url)
     # logger.info(f"requested url: {url}")
@@ -29,9 +35,6 @@ def download(url: str, dir: str = os.getcwd()) -> str:
         return
 
     soup, pairs = replace_links(soup, url, dir)
-
-    logger.info(f"output path: {os.path.join(os.getcwd(), dir)}")
-    os.makedirs(dir, exist_ok=True)
 
     logger.info(f"write html file: {path_to_save}")
     save_content(soup.prettify(), path_to_save, mode="w")
