@@ -74,19 +74,22 @@ def download_links(pairs: list, base_url: str, path_to_save: str = ""):
     for pair in tqdm(pairs, "Downloading"):
         url, name = pair
         content = get_content(url)
-        save_content(
-            content, os.path.join(path_to_save, save_dir, name)
-        )  # ex: os.getcwd() + sitename-io + filename.ext
+        if content:
+            save_content(
+                content, os.path.join(path_to_save, save_dir, name)
+            )  # ex: os.getcwd() + sitename-io + filename.ext
 
 
 def get_content(url: str) -> str:
-    logger.debug(f"requested url: {url}")
     res = requests.get(url)
-    return res.content
+    status_code = res.status_code
+    if status_code == 200:
+        return res.content
+    else:
+        logger.error(f"status code {status_code} for {url}")
 
 
 def save_content(content: bytes, path_to_save: str, mode="wb"):
-    logger.debug(f"saved to {path_to_save}")
     with open(f"{path_to_save}", mode) as f:
         f.write(content)
 

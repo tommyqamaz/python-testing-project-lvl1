@@ -1,5 +1,6 @@
 import re
 import os
+from urllib import response
 from bs4 import BeautifulSoup
 import requests
 import logging
@@ -54,6 +55,10 @@ def join_urls(url1: str, url2: str) -> str:
 
 def get_soup(url: str) -> BeautifulSoup:
     logger.info(f"requested page {url}")
-    html_page = requests.get(url)
-    soup = BeautifulSoup(html_page.content, "html.parser")
-    return soup
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, "html.parser")
+        return soup
+    else:
+        msg = f"page {url} is not available with status code {response.status_code}"
+        logger.error(msg)
