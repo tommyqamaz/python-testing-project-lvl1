@@ -12,6 +12,7 @@ def test_replace_links():
 
     with open("tests/fixtures/after.html", "r") as f:
         after = f.read()
+
         asoup_orig = BeautifulSoup(after, "html.parser")
         with requests_mock.Mocker() as mock:
             mock.register_uri("GET", url, text=str(before))

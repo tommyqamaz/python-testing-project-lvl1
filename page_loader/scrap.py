@@ -4,7 +4,12 @@ from urllib.parse import urlparse
 import os
 import re
 import requests
+import logging
+from tqdm import tqdm
 from page_loader.utils import filter_name, join_urls
+
+logger = logging.getLogger(__name__)
+logger.setLevel("INFO")
 
 
 def replace_links(
@@ -63,10 +68,10 @@ def replace_links(
 
 
 def download_links(pairs: list, base_url: str, path_to_save: str = ""):
-
     save_dir = filter_name(base_url) + "_files"
+    logger.debug(f"created {os.path.join(path_to_save, save_dir)}")
     os.makedirs(os.path.join(path_to_save, save_dir), exist_ok=True)
-    for pair in pairs:
+    for pair in tqdm(pairs, "Downloading"):
         url, name = pair
         content = get_content(url)
         save_content(
@@ -75,13 +80,14 @@ def download_links(pairs: list, base_url: str, path_to_save: str = ""):
 
 
 def get_content(url: str) -> str:
+    logger.debug(f"requested url: {url}")
     res = requests.get(url)
     return res.content
 
 
 def save_content(content: bytes, path_to_save: str, mode="wb"):
+    logger.debug(f"saved to {path_to_save}")
     with open(f"{path_to_save}", mode) as f:
-
         f.write(content)
 
 
