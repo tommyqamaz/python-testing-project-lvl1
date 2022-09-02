@@ -69,7 +69,7 @@ def replace_links(
 
 def download_links(pairs: list, base_url: str, path_to_save: str = ""):
     save_dir = filter_name(base_url) + "_files"
-    logger.debug(f"created {os.path.join(path_to_save, save_dir)}")
+    logger.info(f"create dir for assets {os.path.join(path_to_save, save_dir)}")
     os.makedirs(os.path.join(path_to_save, save_dir), exist_ok=True)
     for pair in tqdm(pairs, "Downloading"):
         url, name = pair

@@ -5,6 +5,7 @@ import os
 import logging
 
 logger = logging.getLogger(__name__)
+logging.basicConfig()
 logger.setLevel("INFO")
 
 
@@ -22,12 +23,15 @@ def download(url: str, dir: str = os.getcwd()) -> str:
     """
 
     path_to_save = get_path_to_save(dir, url)
-    logger.info(f"requested url: {url}")
+    # logger.info(f"requested url: {url}")
     soup = get_soup(url)
+
     soup, pairs = replace_links(soup, url, dir)
-    logger.info(f"output {dir}")
+
+    logger.info(f"output path: {os.path.join(os.getcwd(), dir)}")
     os.makedirs(dir, exist_ok=True)
-    logger.info(f"saved to {path_to_save}")
+
+    logger.info(f"write html file: {path_to_save}")
     save_content(soup.prettify(), path_to_save, mode="w")
 
     download_links(pairs, url, dir)
