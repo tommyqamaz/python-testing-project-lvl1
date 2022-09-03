@@ -24,7 +24,8 @@ def download(url: str, dir: str = os.getcwd()) -> str:
 
     path_to_save = check_path_to_save(dir, url)
     soup = get_soup(url)
-
+    if soup is None:
+        return
     soup, pairs = replace_links(soup, url, dir)
 
     logger.info(f"write html file: {path_to_save}")

@@ -75,10 +75,8 @@ cases = [
 def test_availability(some_url, status_code):
     with requests_mock.Mocker() as mock:
         mock.register_uri("GET", some_url, status_code=status_code)
-        with pytest.raises(SystemExit) as ex:
-            res = get_soup(some_url)
-            assert res is None
-            assert ex.value.code == 0
+        res = get_soup(some_url)
+        assert res is None
 
 
 def test_check_path():
