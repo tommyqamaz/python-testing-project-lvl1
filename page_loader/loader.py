@@ -1,4 +1,4 @@
-from page_loader.utils import get_soup, get_path_to_save
+from page_loader.utils import get_soup, check_path_to_save
 from page_loader.scrap import replace_links, download_links, save_content
 
 import os
@@ -21,18 +21,9 @@ def download(url: str, dir: str = os.getcwd()) -> str:
     Returns:
         str: path where content was saved
     """
-    logger.info(f"output path: {os.path.join(os.getcwd(), dir)}")
-    if os.access(dir, os.W_OK):
-        os.makedirs(dir, exist_ok=True)
-    else:
-        logger.error(f"Access {dir} denied")
-        return
 
-    path_to_save = get_path_to_save(dir, url)
-    # logger.info(f"requested url: {url}")
+    path_to_save = check_path_to_save(dir, url)
     soup = get_soup(url)
-    if soup is None:
-        return
 
     soup, pairs = replace_links(soup, url, dir)
 
@@ -40,4 +31,4 @@ def download(url: str, dir: str = os.getcwd()) -> str:
     save_content(soup.prettify(), path_to_save, mode="w")
 
     download_links(pairs, url, dir)
-    print(f"Page was downloaded as {path_to_save}")
+    print(f"Page was downloaded as '{path_to_save}'")

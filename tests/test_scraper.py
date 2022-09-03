@@ -8,7 +8,7 @@ import requests_mock
 from urllib.parse import urlparse
 
 from page_loader.scrap import replace_links, download_links
-from page_loader.utils import get_soup, get_path_to_save
+from page_loader.utils import get_soup, check_path_to_save
 
 
 pairs = [
@@ -75,14 +75,17 @@ cases = [
 def test_availability(some_url, status_code):
     with requests_mock.Mocker() as mock:
         mock.register_uri("GET", some_url, status_code=status_code)
-        res = get_soup(some_url)
-        assert res is None
+        with pytest.raises(SystemExit) as ex:
+            res = get_soup(some_url)
+            assert res is None
+            assert ex.value.code == 1
 
 
-def test_save_name():
-    res = get_path_to_save("temp", url)
+def test_check_path():
+    os.makedirs("temp")
+    res = check_path_to_save("temp", url)
+    os.rmdir("temp")
     assert res == "temp/ru-hexlet-io-courses.html"
-
-
-def test_file_operations():
-    pass
+    with pytest.raises(SystemExit) as ex:
+        res = check_path_to_save("not/existing/dir", url)
+        assert ex.value.code == 1
