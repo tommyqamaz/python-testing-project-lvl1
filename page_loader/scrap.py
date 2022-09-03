@@ -59,9 +59,7 @@ def replace_links(
                 link_to_save = join_urls(
                     urlparse(base_url).scheme + "://" + url_netloc,
                     link_netloc + file_ext,
-                )
-                if link_to_save == base_url:
-                    link_to_save = None
+                ).replace(".html", "")
                 links.append((link_to_save, new_link))
 
             else:

@@ -16,7 +16,7 @@ pairs = [
         "https://ru.hexlet.io/courses/assets/application.css",
         "ru-hexlet-io-assets-application.css",
     ),
-    ("https://ru.hexlet.io/courses/courses", "ru-hexlet-io-courses.html"),
+    ("https://ru.hexlet.io/courses.html", "ru-hexlet-io-courses.html"),
     (
         "https://ru.hexlet.io/courses/assets/professions/python.png",
         "ru-hexlet-io-assets-professions-python.png",
