@@ -1,10 +1,9 @@
 import re
 import os
-from urllib import response
 from bs4 import BeautifulSoup
 import requests
 import logging
-
+from sys import exit
 
 logger = logging.getLogger(__name__)
 logger.setLevel("INFO")
@@ -28,7 +27,22 @@ def filter_name(url_path: str) -> str:
     return url_path
 
 
-def get_path_to_save(dir: str, url_path: str) -> str:
+def check_path_to_save(dir: str, url_path: str) -> str:
+    """Checks the availability of given directory and
+    returns the path of saved html
+
+    Args:
+        dir (str): dir to check
+        url_path (str): url to download
+
+    Returns:
+        str: path to html which will be saved
+    """
+    logger.info(f"output path: {os.path.join(os.getcwd(), dir)}")
+    if not os.access(dir, os.W_OK):
+        # os.makedirs(dir, exist_ok=True)
+        logger.error(f"Access {dir} denied")
+        exit(1)
     base_name = filter_name(url_path)
     html_name = base_name + ".html"
     path_to_save = os.path.join(dir, html_name)
@@ -55,10 +69,15 @@ def join_urls(url1: str, url2: str) -> str:
 
 def get_soup(url: str) -> BeautifulSoup:
     logger.info(f"requested page {url}")
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except Exception as e:
+        logger.error(e)
+        exit(1)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, "html.parser")
         return soup
     else:
         msg = f"page {url} is not available with status code {response.status_code}"
         logger.error(msg)
+        exit(1)
