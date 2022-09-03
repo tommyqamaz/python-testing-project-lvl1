@@ -78,7 +78,7 @@ def test_availability(some_url, status_code):
         with pytest.raises(SystemExit) as ex:
             res = get_soup(some_url)
             assert res is None
-            assert ex.value.code == 1
+            assert ex.value.code == 0
 
 
 def test_check_path():
@@ -88,4 +88,4 @@ def test_check_path():
     assert res == "temp/ru-hexlet-io-courses.html"
     with pytest.raises(SystemExit) as ex:
         res = check_path_to_save("not/existing/dir", url)
-        assert ex.value.code == 1
+        assert ex.value.code == 0

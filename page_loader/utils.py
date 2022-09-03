@@ -73,11 +73,11 @@ def get_soup(url: str) -> BeautifulSoup:
         response = requests.get(url)
     except Exception as e:
         logger.error(e)
-        exit(1)
+        exit(0)
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, "html.parser")
         return soup
     else:
         msg = f"page {url} is not available with status code {response.status_code}"
         logger.error(msg)
-        exit(1)
+        exit(0)
