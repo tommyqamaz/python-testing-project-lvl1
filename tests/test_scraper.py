@@ -47,10 +47,10 @@ def test_download_files():
 def test_replace_links():
     url = "https://ru.hexlet.io/courses"
 
-    with open("tests/fixtures/before.html", "r") as f:
+    with open("./tests/fixtures/before.html", "r") as f:
         before = f.read()
 
-    with open("tests/fixtures/after.html", "r") as f:
+    with open("./tests/fixtures/after.html", "r") as f:
         after = f.read()
 
         asoup_orig = BeautifulSoup(after, "html.parser")
