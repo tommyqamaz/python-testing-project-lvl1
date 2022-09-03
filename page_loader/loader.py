@@ -33,3 +33,4 @@ def download(url: str, dir: str = os.getcwd()) -> str:
 
     download_links(pairs, url, dir)
     print(f"Page was downloaded as '{path_to_save}'")
+    return path_to_save
