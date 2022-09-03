@@ -84,6 +84,5 @@ def test_check_path():
     res = check_path_to_save("temp", url)
     os.rmdir("temp")
     assert res == "temp/ru-hexlet-io-courses.html"
-    with pytest.raises(SystemExit) as ex:
-        res = check_path_to_save("not/existing/dir", url)
-        assert ex.value.code == 0
+    res = check_path_to_save("not/existing/dir", url)
+    assert res is None

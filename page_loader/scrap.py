@@ -81,6 +81,7 @@ def download_links(pairs: list, base_url: str, path_to_save: str = ""):
 
 
 def get_content(url: str) -> str:
+    logger.info(f"get content {url}")
     res = requests.get(url)
     status_code = res.status_code
     if status_code == 200:

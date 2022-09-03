@@ -75,6 +75,7 @@ def get_soup(url: str) -> BeautifulSoup:
         return
     if response.status_code == 200:
         soup = BeautifulSoup(response.content, "html.parser")
+        logger.info(soup)
         return soup
     else:
         msg = f"page {url} is not available with status code {response.status_code}"
