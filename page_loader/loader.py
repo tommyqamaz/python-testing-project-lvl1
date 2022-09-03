@@ -23,6 +23,8 @@ def download(url: str, dir: str = os.getcwd()) -> str:
     """
 
     path_to_save = check_path_to_save(dir, url)
+    if path_to_save is None:
+        return
     soup = get_soup(url)
     if soup is None:
         return

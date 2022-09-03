@@ -3,7 +3,6 @@ import os
 from bs4 import BeautifulSoup
 import requests
 import logging
-from sys import exit
 
 logger = logging.getLogger(__name__)
 logger.setLevel("INFO")
@@ -42,7 +41,7 @@ def check_path_to_save(dir: str, url_path: str) -> str:
     if not os.access(dir, os.W_OK):
         # os.makedirs(dir, exist_ok=True)
         logger.error(f"Access {dir} denied")
-        exit(1)
+        return
     base_name = filter_name(url_path)
     html_name = base_name + ".html"
     path_to_save = os.path.join(dir, html_name)
