@@ -15,8 +15,6 @@ def download(url: str, dir: str = os.getcwd()) -> str:
     Args:
         url_path (str): web url to save
         dir (str, optional): where to save. Defaults to "cwd".
-        logger (_type_, optional): log the events (like saving, removing etc.).
-                                    Defaults to Logger().
 
     Returns:
         str: path where content was saved

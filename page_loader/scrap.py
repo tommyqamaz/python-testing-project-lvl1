@@ -56,7 +56,10 @@ def replace_links(
 
                 new_link = filter_name(join_urls(url_netloc, link_netloc)) + file_ext
 
-                link_to_save = join_urls(base_url, link)
+                link_to_save = join_urls(
+                    urlparse(base_url).scheme + "://" + url_netloc, link_netloc
+                )
+
                 links.append((link_to_save, new_link))
 
             else:
