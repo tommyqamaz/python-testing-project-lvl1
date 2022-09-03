@@ -47,6 +47,7 @@ def test_download_files():
 def test_replace_links():
     url = "https://ru.hexlet.io/courses"
 
+    assert os.getcwd() == os.listdir()
     with open("./tests/fixtures/before.html", "r") as f:
         before = f.read()
 
