@@ -56,14 +56,11 @@ def replace_links(
 
                 new_link = filter_name(join_urls(url_netloc, link_netloc)) + file_ext
 
-                link_to_save = (
-                    join_urls(
-                        urlparse(base_url).scheme + "://" + url_netloc, link_netloc
-                    )
-                    + file_ext
+                link_to_save = join_urls(
+                    urlparse(base_url).scheme + "://" + url_netloc, link_netloc
                 )
 
-                links.append((link_to_save, new_link))
+                links.append((link_to_save + file_ext, new_link))
 
             else:
                 continue  # we dont need to change or save other types of links
@@ -89,11 +86,15 @@ def download_links(pairs: list, base_url: str, path_to_save: str = ""):
 def get_content(url: str) -> str:
     logger.info(f"get content {url}")
     res = requests.get(url)
-    status_code = res.status_code
-    if status_code == 200:
+    try:
+        res = requests.get(url)
+    except Exception as e:
+        logger.error(e)
+        return
+    if res.status_code == 200:
         return res.content
     else:
-        logger.error(f"status code {status_code} for {url}")
+        logger.error(f"status code {res.status_code} for {url}")
 
 
 def save_content(content: bytes, path_to_save: str, mode="wb"):
