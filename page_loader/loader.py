@@ -3,7 +3,6 @@ from page_loader.scrap import replace_links, download_links, save_content
 
 import os
 import logging
-import sys
 
 logger = logging.getLogger(__name__)
 logging.basicConfig()
@@ -23,15 +22,14 @@ def download(url: str, dir: str = os.getcwd()) -> str:
 
     path_to_save = check_path_to_save(dir, url)
     if path_to_save is None:
-        exit(1)
+        return
     soup = get_soup(url)
     if soup is None:
-        exit(1)
+        return
     soup, pairs = replace_links(soup, url, dir)
 
     logger.info(f"write html file: {path_to_save}")
     save_content(soup.prettify(), path_to_save, mode="w")
 
     download_links(pairs, url, dir)
-    print(f"Page was downloaded as '{path_to_save}'")
     return path_to_save
